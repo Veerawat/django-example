@@ -19,5 +19,5 @@ class SimpleBlogView(TemplateView):
 class SimpleBlogDetailView(DetailView):
     model = Blog
 
-    pk_url_kwarg = 'id'
+    pk_url_kwarg = 'blog_id'
     context_object_name = 'blog'
