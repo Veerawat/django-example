@@ -14,12 +14,32 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from blog.views import SimpleBlogView, SimpleBlogDetailView
+from rest_framework.routers import DefaultRouter
+
+from blog.views import SimpleBlogView, SimpleBlogDetailView, MultipleBlogView
+
+from blog.views_api import BlogListAPIGenericView ,BlogInstantAPIView, BlogViewSet
+
+
+router =DefaultRouter()
+router.register(r'blogs', BlogViewSet, basename='blog')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('blog/<int:blog_id>', SimpleBlogView.as_view(), name='simple-blog'),
-    path('blog/detail/<int:blog_id>', SimpleBlogDetailView.as_view(), name='simple-detail-blog')
+    path("admin/", admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
+
+    path('viewset/', include(router.urls)),
+
+    path("api/blogs/", BlogListAPIGenericView.as_view(), name="blog-api-list"),
+    path("api/blogs/<int:id>", BlogInstantAPIView.as_view(), name="blog-instance"),
+
+    path("blog/", MultipleBlogView.as_view(), name="blog-list"),
+    path("blog/<int:blog_id>", SimpleBlogView.as_view(), name="simple-blog"),
+    path(
+        "blog/detail/<int:blog_id>",
+        SimpleBlogDetailView.as_view(),
+        name="simple-detail-blog",
+    ),
 ]

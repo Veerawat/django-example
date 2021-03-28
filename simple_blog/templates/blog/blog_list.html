@@ -1,0 +1,10 @@
+<h1>My Blog</h1>
+
+<ul>
+    {% for blog in blogs %}
+    <li>
+        <p><a href="{% url 'simple-detail-blog' blog.id %}"></a>{{blog.title}}</p>
+        <span>{{blog.created_by.username}} {{blog.created}}</span>
+    </li>
+    {% endfor %}
+</ul>
